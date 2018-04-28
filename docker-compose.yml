@@ -3,7 +3,8 @@ services:
   datascience-notebook:
       image:            jupyter/datascience-notebook
       volumes:
-        - $PWD:/home/jovyan/work
+        - $PWD:/home/jovyan
       ports:
         - 8888:8888
       container_name:   datascience-notebook-container
+
