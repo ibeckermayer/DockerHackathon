@@ -82,7 +82,6 @@ ax3.set_xlabel('Fundraising Goal')
 ax3.set_ylabel('Total Attempts and Successful Attempts')
 ax3.set_title('Total Attempts and Successful Attempts vs Fundraising Goal')
 label_rects(ax3, rects, bar_labs)
-plt.tight_layout()
 plt.show(block=False)
 
 # From that we can see that most of the interesting data lies in kickstarter campaigns
@@ -101,11 +100,20 @@ df_att = get_df_att_in_range(df, 100, 100000)
 
 fig4, ax4 = plt.subplots()
 hist_bins = [x for x in range(1, 100001, 5000)]
-n_att = ax4.hist(df_att['usd_goal_real'], bins=hist_bins, color='b', alpha=0.5)
-n_succ = ax4.hist(df_succ['usd_goal_real'], bins=hist_bins, color='r', alpha=0.5)
+n_att, bins2, p2 = ax4.hist(df_att['usd_goal_real'], bins=hist_bins, color='b', alpha=0.5)
+n_succ, bins, p = ax4.hist(df_succ['usd_goal_real'], bins=hist_bins, color='r', alpha=0.5)
+n_perc = n_succ/n_att * 100
+ax4.set_xlabel('Fundraising Goal (USD)')
+ax4.set_ylabel('Total Attempts and Successful Attempts')
+ax4.set_title('Total Attempts and Successful Attempts vs Fundraising Goal')
 
+def label_bins(ax, n_perc, bins, n_succ):
+    bin_centers = 0.5 * np.diff(bins) + bins[:-1]
+    for perc, x, n in zip(n_perc, bin_centers, n_succ):
+        ax.annotate("{:.0f}".format(perc)+"%", xy=(x, n), xycoords='data',
+            xytext=(0, 10), textcoords='offset points', va='top', ha='center')
 
-bin_labs = ["{:.2f}".format(nn) for nn in n]
+label_bins(ax4, n_perc, bins, n_succ)
 
-
+plt.tight_layout()
 plt.show()
