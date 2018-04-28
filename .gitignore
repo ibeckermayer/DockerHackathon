@@ -1,3 +1,4 @@
-*#
-*.#
-.local/
+*#*
+.*
+!.gitignore
+!.ipynb_checkpoints/
