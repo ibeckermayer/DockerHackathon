@@ -115,5 +115,41 @@ def label_bins(ax, n_perc, bins, n_succ):
 
 label_bins(ax4, n_perc, bins, n_succ)
 
+# Data looks as expected, the less you ask for the more likely you are to meet your goal
+# There could be more there but we're tight on time so it makes sense to explore
+# other realms
+
+# let's look at success vs month launched for example
+import calendar
+df['month_launched'] = pd.to_datetime(df['launched']).dt.month
+
+def get_att_by_month(df, month):
+    return df.loc[df['month_launched'] == month].shape[0]
+
+
+def get_succ_by_month(df, month):
+    temp = df.loc[df['month_launched'] == month]
+    return temp.loc[temp['state_binary'] == True].shape[0]
+
+def get_perc_suc_by_month(df, month):
+    return get_succ_by_month(df, month)/get_att_by_month(df, month) * 100
+
+
+fig5, ax5 = plt.subplots()
+
+mon_succ = [get_succ_by_month(df, i) for i in range(1, 13)]
+mon_att = [get_att_by_month(df, i) for i in range(1, 13)]
+bar_labs = ["{:.0f}".format(get_perc_suc_by_month(df, i)) + "%" for i in range(1, 13)]
+ax5.bar(np.arange(1,13), mon_att, color='b', alpha=0.5)
+rects = ax5.bar(np.arange(1,13), mon_succ, color='r', alpha=0.5)
+x_labs = [calendar.month_name[i] for i in range(1, 13)]
+ax5.set_xticks(np.arange(1,13))
+ax5.set_xticklabels(x_labs, rotation=30, ha='right')
+ax5.set_xlabel('Month Launched')
+ax5.set_ylabel('Total Attempts and Successful Attempts')
+ax5.set_title('Total Attempts and Successful Attempts vs Month Launched')
+label_rects(ax5, rects, bar_labs)
+plt.show(block=False)
+
 plt.tight_layout()
 plt.show()
