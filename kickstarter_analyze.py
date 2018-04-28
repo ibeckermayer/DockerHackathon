@@ -151,5 +151,35 @@ ax5.set_title('Total Attempts and Successful Attempts vs Month Launched')
 label_rects(ax5, rects, bar_labs)
 plt.show(block=False)
 
+# Cool, so we learned that you don't want to start your campaigns in December
+# How about category by category?
+def get_att_by_cat(df, cat):
+    return df.loc[df['main_category'] == cat].shape[0]
+
+
+def get_succ_by_cat(df, cat):
+    temp = df.loc[df['main_category'] == cat]
+    return temp.loc[temp['state_binary'] == True].shape[0]
+
+def get_perc_suc_by_cat(df, cat):
+    return get_succ_by_cat(df, cat)/get_att_by_cat(df, cat) * 100
+
+fig6, ax6 = plt.subplots()
+
+unique_categories = df['main_category'].unique()
+cat_succ = [get_succ_by_cat(df, i) for i in unique_categories]
+cat_att = [get_att_by_cat(df, i) for i in unique_categories]
+bar_labs = ["{:.0f}".format(get_perc_suc_by_cat(df, i)) + "%" for i in unique_categories]
+ax6.bar(unique_categories, cat_att, color='b', alpha=0.5)
+rects = ax6.bar(np.arange(0, df['main_category'].nunique()), cat_succ, color='r', alpha=0.5)
+x_labs = [i for i in unique_categories]
+ax6.set_xticks(np.arange(0, df['main_category'].nunique()))
+ax6.set_xticklabels(x_labs, rotation=30, ha='right')
+ax6.set_xlabel('Main Category')
+ax6.set_ylabel('Total Attempts and Successful Attempts')
+ax6.set_title('Total Attempts and Successful Attempts vs Main Category')
+label_rects(ax6, rects, bar_labs)
+plt.show(block=False)
+
 plt.tight_layout()
 plt.show()
