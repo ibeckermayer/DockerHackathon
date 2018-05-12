@@ -44,3 +44,14 @@ datascience-notebook-container |         http://localhost:8888/?token=dfdfa78ab2
 5. Read the analysis
 
 
+## Other files
+- `docker-compose.yml` - file that creates the docker container to run Jupyter Notebooks
+- `kickstarter_analyze.py` - file that analyzes kickstarter data in the Data folder
+
+## Bugs
+No bugs found yet
+
+## Authors
+* [Isaiash Becker-Mayer](https://github.com/ibeckermayer)
+* [Nickolas Teixeira](https://github.com/nickolasteixeira)
+* [Spence Taylor](https://github.com/set808)
